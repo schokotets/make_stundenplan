@@ -1,5 +1,5 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i python3.10 -p python310Packages.ortools
+#!nix-shell deps.nix -i python3.10
 
 from typing import Dict, Tuple, List, Any
 from read_input import readInput
