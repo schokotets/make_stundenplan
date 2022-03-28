@@ -1,10 +1,12 @@
 from ortools.linear_solver import pywraplp
 from days import days
 
+import os
+
 def optimize(by_module, vorls, blocked, predet):
     # Solver
     # Create the mip solver with the SCIP backend.
-    solver = pywraplp.Solver.CreateSolver("GLOP")
+    solver = pywraplp.Solver.CreateSolver(os.environ["SOLVER"] if "SOLVER" in os.environ else "GLOP")
 
     # Variables
     vars: Dict[str,List[Tuple[Block,Any]]] = {}
