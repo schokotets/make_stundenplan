@@ -84,8 +84,14 @@ def optimize(by_module, vorls, blocked, predet):
     # Ziel:
     # - möglichst früh
     # - möglichst nicht in 4. DS (Mittag)
+    # - möglichst an anderem Tag als VL
     objective_terms = []
     for course in vars:
+        course_days = []
+
+        for vorl in by_module[course][0]:
+            course_days.append(vorl.day)
+
         for u, v in vars[course]:
             if u.time == 4:
                 # noch besser als 7. DS
@@ -96,7 +102,12 @@ def optimize(by_module, vorls, blocked, predet):
                 coeff = u.time
             #if u.day == "Mittwoch":
             #    coeff = 8
+
+            if u.day in course_days:
+                coeff += 8
+
             objective_terms.append(coeff * v)
+
     solver.Minimize(solver.Sum(objective_terms))
 
     # lösen
