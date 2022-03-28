@@ -63,6 +63,24 @@ def optimize(by_module, vorls, blocked, predet):
         if vars[course]:
             solver.Add(solver.Sum([x[1] for x in vars[course]]) == 1)
 
+    # nicht mehr als 4er-Serie
+    for day in days:
+        for offset in [1,2]:
+            matching = []
+            for h in range(offset,offset+5):
+                for course in vars:
+                    for u, v in vars[course]:
+                        if u.time == h and u.day == day:
+                            matching.append(v)
+
+            vltimes = []
+            for course in by_module:
+                for vorl in by_module[course][0]:
+                    if vorl.day == day and vorl.time >= offset and vorl.time <= offset+4:
+                        if vorl.time not in vltimes:
+                            vltimes.append(vorl.time)
+            solver.Add(solver.Sum(matching) <= 4 - len(vltimes))
+
     # Ziel:
     # - möglichst früh
     # - möglichst nicht in 4. DS (Mittag)
