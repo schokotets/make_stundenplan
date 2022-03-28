@@ -1,5 +1,5 @@
 from ortools.linear_solver import pywraplp
-from days import days
+from days import days, days_rev
 
 import os
 
@@ -85,6 +85,7 @@ def optimize(by_module, vorls, blocked, predet):
     # - möglichst früh
     # - möglichst nicht in 4. DS (Mittag)
     # - möglichst an anderem Tag als VL
+    # - möglichst nicht am Folgetag der VL
     objective_terms = []
     for course in vars:
         course_days = []
@@ -105,6 +106,10 @@ def optimize(by_module, vorls, blocked, predet):
 
             if u.day in course_days:
                 coeff += 8
+
+            daybefore = days_rev[(days[u.day]-1) % 5]
+            if daybefore in course_days:
+                coeff += 6
 
             objective_terms.append(coeff * v)
 
