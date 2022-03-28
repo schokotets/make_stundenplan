@@ -1,6 +1,17 @@
 from days import days, days_rev
 from colors import colors
 
+hours = [
+    "  ?  ",
+    " 7:30",
+    " 9:20",
+    "11:10",
+    "13:00",
+    "14:50",
+    "16:40",
+    "18:30",
+]
+
 def printList(blocks, hideÜbungen, compact):
     # sort blocks
     def sortfn(block: Block):
@@ -63,12 +74,12 @@ def printCal(blocks, hideÜbungen, compact):
 
 def printGrid(bls, hideÜbungen):
 
-    print("┌─┬" + ("─" * 6 + "┬") * 5 + ("─" * 6 + "┐"))
-    print("│h", end="│ ")
+    print("┌─┬" + ("─" * 5 + "┬") + ("─" * 6 + "┬") * 5 + ("─" * 6 + "┐"))
+    print("│h│Zeit ", end="│ ")
     for day in days:
         print(day[:3], end="  │ ")
     print()
-    print("├─┼" + ("─" * 6 + "┼") * 5 + ("─" * 6 + "┤"))
+    print("├─┼" + ("─" * 5 + "┼") + ("─" * 6 + "┼") * 5 + ("─" * 6 + "┤"))
 
     grid = [
         [[], [], [], [], [], []],
@@ -88,11 +99,11 @@ def printGrid(bls, hideÜbungen):
         grid[b.time][days[b.day]].sort(key=lambda b: f"{not b.important}{b.type}")
 
     for hour, hrow in enumerate(grid):
-        print("│" + str(hour), end="│")
+        print(f"│{hour}│{hours[hour]}", end="│")
         maxlen = max(max(map(len, hrow)), 1)
         for r in range(maxlen):
             if r != 0:
-                print("│ │", end="")
+                print("│ │     │", end="")
             for dslot in hrow:
                 if dslot and len(dslot) > r:
                     b = dslot[r]
@@ -101,6 +112,6 @@ def printGrid(bls, hideÜbungen):
                     print("      ", end="│")
             print()
         if hour < len(grid) - 1:
-            print("├─┼" + ("─" * 6 + "┼") * 5 + ("─" * 6 + "┤"))
+            print("├─┼" + ("─" * 5 + "┼")+ ("─" * 6 + "┼") * 5 + ("─" * 6 + "┤"))
         else:
-            print("└─┴" + ("─" * 6 + "┴") * 5 + ("─" * 6 + "┘"))
+            print("└─┴" + ("─" * 5 + "┴")+ ("─" * 6 + "┴") * 5 + ("─" * 6 + "┘"))
