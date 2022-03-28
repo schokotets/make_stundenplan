@@ -67,9 +67,13 @@ def optimize(by_module, vorls, blocked, predet):
     objective_terms = []
     for course in vars:
         for u, v in vars[course]:
-            coeff = u.time
             if u.time == 4:
-                coeff *= 100
+                # noch besser als 7. DS
+                coeff = 13
+            elif u.time >= 5:
+                coeff = u.time * 2
+            else:
+                coeff = u.time
             #if u.day == "Mittwoch":
             #    coeff = 8
             objective_terms.append(coeff * v)
